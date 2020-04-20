@@ -16,15 +16,18 @@ async function getFilms(username, password) {
 		await Promise.all([
 			page.waitForSelector('.rodo__buttons button'),
 			page.click('.rodo__buttons button'),
-			page.waitForSelector('.authPage__list'),
+			page.waitForSelector('.authButton--filmweb'),
 			page.click('.authButton--filmweb'),
-			page.waitForSelector('.materialForm__input'),
+			page.waitForSelector('input[name="j_username"]'),
 			page.click('input[name="j_username"]'),
-			page.keyboard.type(toString(username)),
+			page.keyboard.type(toString(username, { delay: 30 })),
+			page.waitForSelector('input[name="j_password"]'),
 			page.click('input[name="j_password"]'),
-			page.keyboard.type(toString(password)),
+			page.keyboard.type(toString(password, { delay: 30 })),
+			page.waitForSelector('.materialForm__submit'),
 			page.click('.materialForm__submit'),
 			page.waitForNavigation({ waitUntil: 'networkidle0' }),
+			page.waitFor(15000),
 			page.screenshot({ path: 'filmweb.png' })
 		]);
 
@@ -43,13 +46,13 @@ async function getFilms(username, password) {
 				properties.year = yearElement.innerText;
 				properties.genre = genreElement.innerText;
 
-				return JSON.stringify(properties);
+				return fs.writeFileSync('userFilms.json', JSON.stringify(properties));
 			});
 		});
 		console.log(results);
 		await browser.close();
 	} catch (error) {
-		console.error(error);
+		console.error('something went wrong');
 	}
 }
 
