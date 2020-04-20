@@ -46,10 +46,11 @@ async function getFilms(username, password) {
 				properties.year = yearElement.innerText;
 				properties.genre = genreElement.innerText;
 
+				//zwraca plik JSON o nazwie userFilms
 				return fs.writeFileSync('userFilms.json', JSON.stringify(properties));
 			});
 		});
-		console.log(results);
+		console.log(JSON.stringify(properties));
 		await browser.close();
 	} catch (error) {
 		console.error('something went wrong');
