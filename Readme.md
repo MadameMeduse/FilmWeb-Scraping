@@ -1,11 +1,18 @@
-##FilmWeb scraper with Puppeteer
+# FilmWeb scraper with Puppeteer
 
-#Installation
+  
+
+## Installation
+
 To use Puppeteer in this project, run:
 
-`npm i puppeteer`
-# or "yarn add puppeteer" 
+  
 
+`npm i puppeteer`
+
+or 
+
+`yarn add puppeteer`
 
 Program, który **scrapuje**  za pomocą **Puppeteer** listę ocenionych filmów użytkownika w serwisie filmweb.pl. Program powinien:
 
