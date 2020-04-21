@@ -9,6 +9,8 @@ async function getFilms(username, password) {
 
 		const page = await browser.newPage();
 		const url = 'https://www.filmweb.pl/login';
+		const username = 'nehodo8477@wwrmails.com';
+		const password = 'NPqao0u';
 
 		await page.goto(url, { waitUntil: 'networkidle0' });
 		// Login
@@ -21,11 +23,11 @@ async function getFilms(username, password) {
 		//typing username
 		await page.waitForSelector('input[name="j_username"]');
 		await page.click('input[name="j_username"]');
-		await page.keyboard.type(username, { delay: 30 });
+		await page.keyboard.type(username);
 		//typing password
 		await page.waitForSelector('input[name="j_password"]');
 		await page.click('input[name="j_password"]');
-		await page.keyboard.type(password, { delay: 30 });
+		await page.keyboard.type(password);
 		//submit
 		await page.waitForSelector('.materialForm__submit');
 		await page.click('.materialForm__submit');
@@ -37,8 +39,11 @@ async function getFilms(username, password) {
 
 		//get user actual name after login to enter the films section
 		const userHref = document.querySelector('#userHeaderButton a').getAttribute('href');
+		const filmSectionUrl = `https://www.filmweb.pl${userHref}/films`;
 
-		await page.goto(`https://www.filmweb.pl${userHref}/films`, { waitUntil: 'networkidle0' });
+		await page.waitForSelector('#userHeaderButton a');
+		await page.goto(filmSectionUrl, { waitUntil: 'networkidle0' });
+		await page.waitForNavigation({ waitUntil: 'networkidle0' });
 		await page.screenshot({ path: 'filmweb.png' });
 
 		const results = await page.$$eval('.voteBoxes__box', (films) => {
@@ -66,6 +71,7 @@ async function getFilms(username, password) {
 	} catch (error) {
 		console.error('something went wrong');
 	}
+	debugger;
 }
 
 getFilms();
