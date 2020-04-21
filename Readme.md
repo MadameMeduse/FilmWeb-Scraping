@@ -2,17 +2,12 @@
 
   
 
-## Installation
+## To run the aplication 
+ 
+ You can use your own credentials for filmweb account. Simply run this in terminal:
 
-To use Puppeteer in this project, run:
+`node index.js login password`
 
-  
-
-`npm i puppeteer`
-
-or 
-
-`yarn add puppeteer`
 
 Program, który **scrapuje**  za pomocą **Puppeteer** listę ocenionych filmów użytkownika w serwisie filmweb.pl. Program powinien:
 
