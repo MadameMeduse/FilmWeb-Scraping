@@ -11,27 +11,37 @@ async function getFilms(username, password) {
 		const url = 'https://www.filmweb.pl/login';
 
 		await page.goto(url, { waitUntil: 'networkidle0' });
-
 		// Login
-		await Promise.all([
-			page.waitForSelector('.rodo__buttons button'),
-			page.click('.rodo__buttons button'),
-			page.waitForSelector('.authButton--filmweb'),
-			page.click('.authButton--filmweb'),
-			page.waitForSelector('input[name="j_username"]'),
-			page.click('input[name="j_username"]'),
-			page.keyboard.type(toString(username, { delay: 30 })),
-			page.waitForSelector('input[name="j_password"]'),
-			page.click('input[name="j_password"]'),
-			page.keyboard.type(toString(password, { delay: 30 })),
-			page.waitForSelector('.materialForm__submit'),
-			page.click('.materialForm__submit'),
-			page.waitForNavigation({ waitUntil: 'networkidle0' }),
-			page.waitFor(15000),
-			page.screenshot({ path: 'filmweb.png' })
-		]);
+		//Rodo button
+		await page.waitForSelector('.rodo__buttons button');
+		await page.click('.rodo__buttons button');
+		//Login by filmweb account
+		await page.waitForSelector('.authButton--filmweb');
+		await page.click('.authButton--filmweb');
+		//typing username
+		await page.waitForSelector('input[name="j_username"]');
+		await page.click('input[name="j_username"]');
+		await page.keyboard.type(username, { delay: 30 });
+		//typing password
+		await page.waitForSelector('input[name="j_password"]');
+		await page.click('input[name="j_password"]');
+		await page.keyboard.type(password, { delay: 30 });
+		//submit
+		await page.waitForSelector('.materialForm__submit');
+		await page.click('.materialForm__submit');
+		await page.waitForNavigation({ waitUntil: 'networkidle0' });
+		//skip the add button
+		await page.waitForSelector('.ws__skipButton');
+		await page.click('.ws__skipButton');
+		await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
-		const results = await page.$$eval('.userVotesPage__results', (films) => {
+		//get user actual name after login to enter the films section
+		const userHref = document.querySelector('#userHeaderButton a').getAttribute('href');
+
+		await page.goto(`https://www.filmweb.pl${userHref}/films`, { waitUntil: 'networkidle0' });
+		await page.screenshot({ path: 'filmweb.png' });
+
+		const results = await page.$$eval('.voteBoxes__box', (films) => {
 			return films.map((film) => {
 				const properties = {};
 				const titleElement = film.querySelector('.filmPreview__title');
@@ -51,6 +61,7 @@ async function getFilms(username, password) {
 			});
 		});
 		console.log(JSON.stringify(properties));
+
 		await browser.close();
 	} catch (error) {
 		console.error('something went wrong');
