@@ -9,8 +9,10 @@ async function getFilms(username, password) {
 
 		const page = await browser.newPage();
 		const url = 'https://www.filmweb.pl/login';
-		const username = 'nehodo8477@wwrmails.com';
-		const password = 'NPqao0u';
+
+		//variables made for testing
+		// const username = 'nehodo8477@wwrmails.com';
+		// const password = 'NPqao0u';
 
 		await page.goto(url, { waitUntil: 'networkidle0' });
 		// Login
@@ -71,7 +73,6 @@ async function getFilms(username, password) {
 	} catch (error) {
 		console.error('something went wrong');
 	}
-	debugger;
 }
 
 getFilms();
